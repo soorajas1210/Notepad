@@ -71,7 +71,7 @@ function RegisterScreen() {
     }
 useEffect(() => {
   if (userInfo) {
-    navigate("/login");
+    navigate("/mynotes");
   }
 }, [userInfo]);
 

@@ -1,72 +1,61 @@
-const asyncHandler=require("express-async-handler");
-const User=require("../models/userModel");
+const asyncHandler = require("express-async-handler");
+const User = require("../models/userModel");
 const generateToken = require("../util/generateToken");
 
+const registerUser = asyncHandler(async (req, res) => {
+  const { name, email, password, pic } = req.body;
 
+  console.log(name, email);
 
-const registerUser= asyncHandler(async(req,res)=>{
+  const userExists = await User.findOne({ email });
 
-    const {name,email,password,pic}=req.body;
-
-console.log(name,email);
-
-const userExists=await User.findOne({email});
-
-if(userExists){
+  if (userExists) {
     res.status(400);
-    throw new Error ("user already exists")
-}
+    throw new Error("User Already Exists");
+  }
 
-const user=await User.create({
+  const user = await User.create({
     name,
     email,
     password,
     pic,
-});
+  });
 
+  console.log("user::", user);
 
-console.log("user::",user)
-
-if(user){
+  if (user) {
     res.status(201).json({
-        _id:user.id,
-        name:user.name,
-        email:user.email,
-        pic:user.pic,
-        isAdmin:user.isAdmin,
-          token:generateToken(user._id),
-    })
-}
+      _id: user.id,
+      name: user.name,
+      email: user.email,
+      pic: user.pic,
+      isAdmin: user.isAdmin,
+      token: generateToken(user._id),
+    });
+  } else {
+    res.status(400);
 
-else{
-
-    res.status(400)
-
-    throw new Error("error occured")
-}
-
-})
+    throw new Error("Error Occured");
+  }
+});
 
 const authUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
-console.log("body",req.body);
+  console.log("body", req.body);
 
   const user = await User.findOne({ email });
 
-  console.log("userrrr",user)
+  console.log("userrrr", user);
 
   if (user && (await user.matchPassword(password))) {
-
-
     res.json({
       _id: user._id,
       name: user.name,
       email: user.email,
       isAdmin: user.isAdmin,
-      token:generateToken(user._id),
+      token: generateToken(user._id),
       pic: user.pic,
-      
     });
   } else {
     res.status(401);
@@ -78,10 +67,9 @@ console.log("body",req.body);
 // @route   GET /api/users/profile
 // @access  Private
 
-
 const updateUserProfile = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user._id);
-  console.log("userMan",user)
+  console.log("userMan", user);
 
   if (user) {
     user.name = req.body.name || user.name;
@@ -107,13 +95,4 @@ const updateUserProfile = asyncHandler(async (req, res) => {
   }
 });
 
-
-
-
-module.exports={registerUser,authUser,updateUserProfile}
-
-
-
-
-
-   
+module.exports = { registerUser, authUser, updateUserProfile };

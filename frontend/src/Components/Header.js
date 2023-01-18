@@ -1,4 +1,4 @@
-import React,{useEffect} from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import {
@@ -10,33 +10,28 @@ import {
   NavDropdown,
 } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-
-import {logout} from '../actions/userActions'
-
-import {Link} from 'react-router-dom'
+import { logout } from "../actions/userActions";
+import { Link } from "react-router-dom";
 
 function Header({ setSearch }) {
- 
- const navigate = useNavigate();
-const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-const userLogin = useSelector((state) => state.userLogin);
-const { userInfo } = userLogin;
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
 
-const logoutHandler = () => {
-  dispatch(logout());
-  navigate('/login')
-};
+  const logoutHandler = () => {
+    dispatch(logout());
+    navigate("/login");
+  };
 
-useEffect(() => {}, [userInfo]);
-
-
+  useEffect(() => {}, [userInfo]);
 
   return (
     <Navbar collapseOnSelect expand="lg" bg="primary" variant="dark">
       <Container>
         <Link to="/">
-          <Navbar.Brand>Note Zipper</Navbar.Brand>
+          <Navbar.Brand>Notepad</Navbar.Brand>
         </Link>
 
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
@@ -54,9 +49,12 @@ useEffect(() => {}, [userInfo]);
           <Nav>
             <>
               <Link to="mynotes">
-                <Nav.Link>My Notes</Nav.Link>
+                <Nav.Link href="/mynotes">My Notes</Nav.Link>
               </Link>
-              <NavDropdown title={userInfo?userInfo.name:"login"} id="collasible-nav-dropdown">
+              <NavDropdown
+                title={userInfo ? userInfo.name : "login"}
+                id="collasible-nav-dropdown"
+              >
                 <NavDropdown.Item href="/profile">
                   {/* <img
                       alt=""
@@ -69,12 +67,11 @@ useEffect(() => {}, [userInfo]);
                 </NavDropdown.Item>
 
                 <NavDropdown.Divider />
-                <NavDropdown.Item onClick={logoutHandler}
-              >Logout</NavDropdown.Item>
+                <NavDropdown.Item onClick={logoutHandler}>
+                  Logout
+                </NavDropdown.Item>
               </NavDropdown>
             </>
-
-        
           </Nav>
         </Navbar.Collapse>
       </Container>

@@ -22,12 +22,6 @@ router.route("/:id").get(getNoteById).put(protect, UpdateNote).delete(protect,De
 
 
 
-// router
-//   .route("/:id")
-//   .get(getNoteById)
-//   .delete(protect, DeleteNote)
-//   .put(protect, UpdateNote);
-
 
 
 

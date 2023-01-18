@@ -88,8 +88,7 @@ function MyNotes({ search }) {
                       style={{
                         display: "flex",
                         justifyContent: "space-between",
-                      }}
-                    >
+                      }} >
                       <div>
                         <span
                           style={{
